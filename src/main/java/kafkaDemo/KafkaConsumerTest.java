@@ -21,7 +21,7 @@ public class KafkaConsumerTest implements Runnable {
 	private final KafkaConsumer<String, String> consumer;
 	private ConsumerRecords<String, String> msgList;
 	private final String topic;
-	private static final String GROUPID = "groupABC";
+	private static final String GROUPID = "group9527";
 
 	public KafkaConsumerTest(String topicName) {
 		Properties props = new Properties();
@@ -67,7 +67,7 @@ public class KafkaConsumerTest implements Runnable {
 	}
 
 	public static void main(String args[]) {
-		KafkaConsumerTest test1 = new KafkaConsumerTest("filebeat_gaotu_api_nginx_access");
+		KafkaConsumerTest test1 = new KafkaConsumerTest("genshuixue_topic_test");
 		Thread thread1 = new Thread(test1);
 		thread1.start();
 	}

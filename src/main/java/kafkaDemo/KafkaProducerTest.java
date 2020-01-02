@@ -3,6 +3,7 @@ package kafkaDemo;
 import java.util.Properties;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
+import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringSerializer;
 
@@ -13,12 +14,13 @@ public class KafkaProducerTest implements Runnable {
 
 	public KafkaProducerTest(String topicName) {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "master:9092,slave1:9092,slave2:9092");
+		props.put("bootstrap.servers", "172.16.5.67:9092");
 		props.put("acks", "all");
 		props.put("retries", 0);
 		props.put("batch.size", 16384);
-		props.put("key.serializer", StringSerializer.class.getName());
-		props.put("value.serializer", StringSerializer.class.getName());
+		props.put(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		props.put(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
+		props.put(ProducerConfig.INTERCEPTOR_CLASSES_CONFIG, ProducerInterceptorPrefix.class.getName());
 		this.producer = new KafkaProducer<String, String>(props);
 		this.topic = topicName;
 	}
@@ -31,11 +33,11 @@ public class KafkaProducerTest implements Runnable {
 				String messageStr = "你好，这是第" + messageNo + "条数据";
 				producer.send(new ProducerRecord<String, String>(topic, "Message", messageStr));
 				// 生产了100条就打印
-				if (messageNo % 100 == 0) {
+				if (messageNo % 10 == 0) {
 					System.out.println("发送的信息:" + messageStr);
 				}
 				// 生产1000条就退出
-				if (messageNo % 1000 == 0) {
+				if (messageNo % 30 == 0) {
 					System.out.println("成功发送了" + messageNo + "条");
 					break;
 				}
@@ -49,7 +51,7 @@ public class KafkaProducerTest implements Runnable {
 	}
 
 	public static void main(String args[]) {
-		KafkaProducerTest test = new KafkaProducerTest("KAFKA_TEST");
+		KafkaProducerTest test = new KafkaProducerTest("genshuixue_topic_test");
 		Thread thread = new Thread(test);
 		thread.start();
 	}

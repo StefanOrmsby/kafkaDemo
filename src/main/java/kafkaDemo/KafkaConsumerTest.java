@@ -25,12 +25,12 @@ public class KafkaConsumerTest implements Runnable {
 
 	public KafkaConsumerTest(String topicName) {
 		Properties props = new Properties();
-		props.put("bootstrap.servers", "172.16.5.67:9092");
+		props.put("bootstrap.servers", "172.16.33.93:9092");
 		props.put("group.id", GROUPID);
 		props.put("enable.auto.commit", "true");
 		props.put("auto.commit.interval.ms", "1000");
 		props.put("session.timeout.ms", "30000");
-		props.put("auto.offset.reset", "earliest");
+		props.put("auto.offset.reset", "latest");
 		props.put("key.deserializer", StringDeserializer.class.getName());
 		props.put("value.deserializer", StringDeserializer.class.getName());
 		this.consumer = new KafkaConsumer<String, String>(props);
@@ -67,7 +67,7 @@ public class KafkaConsumerTest implements Runnable {
 	}
 
 	public static void main(String args[]) {
-		KafkaConsumerTest test1 = new KafkaConsumerTest("genshuixue_topic_test");
+		KafkaConsumerTest test1 = new KafkaConsumerTest("test");
 		Thread thread1 = new Thread(test1);
 		thread1.start();
 	}
